@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Thúy Hiền - Personal Portfolio</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        navy: {
+                            50: '#f4f6fa',
+                            100: '#e9edf5',
+                            600: '#2563eb',
+                            800: '#1e40af',
+                            900: '#1e293b',
+                            950: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            overflow-x: hidden;
+            background-color: #0f172a;
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .content-layer {
+            position: relative;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .interactive {
+            pointer-events: auto;
+        }
+        .glassmorphism {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="text-slate-200 antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Interactive Canvas Layer -->
+    <canvas id="bubbleCanvas"></canvas>
+
+    <!-- Floating Audio & Effect Control Panel -->
+    <div class="fixed bottom-6 right-6 z-50 glassmorphism p-3 rounded-2xl shadow-2xl flex flex-col gap-2 interactive">
+        <button id="btnMusic" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-blue-600 text-slate-300 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium" title="Bật/Tắt Nhạc Nền">
+            <span id="musicIcon">🔇</span> <span id="musicText">Nhạc Nền: Tắt</span>
+        </button>
+        <button id="btnToggleBubbles" class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-emerald-600 text-slate-300 hover:text-white transition-all duration-300 flex items-center justify-center gap-2 text-sm font-medium" title="Ẩn/Hiện Bong Bóng">
+            <span id="bubbleIcon">🎈</span> <span id="bubbleText">Hiệu ứng: Bật</span>
+        </button>
+    </div>
+
+    <!-- Background Music Audio Tag -->
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Main Content Layer -->
+    <div class="content-layer min-h-screen flex flex-col">
+
+        <!-- Navigation Bar -->
+        <nav class="sticky top-0 z-40 glassmorphism border-b border-slate-800/50 transition-all duration-300">
+            <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+                <a href="#" class="text-xl font-serif font-bold tracking-tight text-white interactive">THUY HIEN.</a>
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+                    <a href="#about" class="hover:text-blue-400 transition-colors interactive">Giới Thiệu</a>
+                    <a href="#experience" class="hover:text-blue-400 transition-colors interactive">Kinh Nghiệm</a>
+                    <a href="#skills" class="hover:text-blue-400 transition-colors interactive">Kỹ Năng</a>
+                    <a href="#projects" class="hover:text-blue-400 transition-colors interactive">Dự Án</a>
+                    <a href="#contact" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-all shadow-lg shadow-blue-500/20 interactive">Liên Hệ</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="relative flex-1 min-h-[calc(100vh-5rem)] flex items-center max-w-6xl mx-auto px-6 py-12 md:py-24 w-full">
+            <div class="max-w-3xl space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-xs font-semibold tracking-wider text-blue-400 uppercase">
+                    Sinh viên năm cuối UEH
+                </div>
+                <h1 class="text-5xl md:text-7xl font-serif font-bold tracking-tight text-white leading-tight">
+                    Tư duy nhạy bén.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Thực chiến kinh doanh.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 max-w-xl font-light leading-relaxed">
+                    Tôi là <span class="text-white font-medium">Nguyễn Thúy Hiền</span>, chuyên ngành Quản trị Kinh doanh tại UEH. Định hướng trở thành Quản trị viên tập sự (Management Trainee) xuất sắc.
+                </p>
+                <div class="pt-4 flex flex-wrap gap-4 items-center">
+                    <a href="#projects" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold shadow-lg shadow-blue-500/25 transition-all transform hover:-translate-y-0.5 interactive">
+                        Xem Các Dự Án
+                    </a>
+                    <a href="#contact" class="px-6 py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold border border-slate-700 transition-all transform hover:-translate-y-0.5 interactive">
+                        Liên Hệ Tôi
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- About & Education Section -->
+        <section id="about" class="py-24 border-t border-slate-900 bg-slate-950/40">
+            <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-4 sticky top-28">
+                    <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">01 / Profile</h2>
+                    <p class="text-3xl font-serif font-bold text-white">Giới Thiệu Bản Thân</p>
+                </div>
+                <div class="lg:col-span-8 space-y-12">
+                    <p class="text-lg text-slate-400 leading-relaxed font-light">
+                        Sở hữu mức điểm <span class="text-white font-medium">GPA tích lũy xuất sắc 3.6/4.0</span>, tôi kết hợp tư duy logic từ môi trường học thuật chất lượng cao tại UEH với năng lực thực chiến điều phối truyền thông, đàm phán đối ngoại linh hoạt. Tôi đam mê giải quyết các bài toán thị trường và tối ưu hóa tăng trưởng kinh doanh thông qua dữ liệu.
+                    </p>
+                    
+                    <div class="border-t border-slate-800 pt-8">
+                        <h3 class="text-lg font-semibold text-white mb-6">Học Vấn Tại UEH</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <div>
+                                    <h4 class="text-white font-medium text-base">Đại học Kinh tế TP.HCM (UEH)</h4>
+                                    <p class="text-slate-400 text-sm">Cử nhân Quản trị Kinh doanh (Chất lượng cao)</p>
+                                </div>
+                                <span class="text-slate-500 text-sm">2023 - 2027 (Dự kiến)</span>
+                            </div>
+                            <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside pl-1">
+                                <li>Điểm trung bình tích lũy: <strong class="text-emerald-400">GPA 3.6 / 4.0</strong> (Xếp loại Giỏi)</li>
+                                <li>Học bổng Khuyến khích học tập UEH học kỳ Doanh nghiệp năm 2025.</li>
+                                <li>Top 10 Cuộc thi Ý tưởng Kinh doanh đổi mới sáng tạo cấp trường.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-24 border-t border-slate-900">
+            <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-4 sticky top-28">
+                    <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">02 / Journey</h2>
+                    <p class="text-3xl font-serif font-bold text-white">Kinh Nghiệm Thực Chiến</p>
+                </div>
+                <div class="lg:col-span-8 space-y-12 relative border-l border-slate-800 pl-6 md:pl-8 ml-2">
+                    
+                    <!-- Exp 1 -->
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-blue-500 rounded-full -left-[35px] md:-left-[43px] top-1.5 border-4 border-slate-900 shadow-sm shadow-blue-500/50"></div>
+                        <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                            <div>
+                                <h3 class="text-white font-semibold text-lg">Thực tập sinh Phát triển Kinh doanh</h3>
+                                <p class="text-blue-400 text-sm font-medium">Công ty TNHH Giải pháp Công nghệ NextGen</p>
+                            </div>
+                            <span class="text-slate-500 text-xs font-medium px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800">06/2025 - Hiện tại</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                            <li><strong class="text-white">Nghiên cứu & Phân tích:</strong> Thu thập dữ liệu, lập báo cáo phân tích đối thủ cạnh tranh ngành SaaS cho nhóm trưởng.</li>
+                            <li><strong class="text-white">Tối ưu chuyển đổi:</strong> Quản lý lead qua hệ thống CRM, góp phần <span class="text-emerald-400 font-semibold">tăng 15% tỷ lệ chuyển đổi</span> trong Quý 3/2025.</li>
+                            <li><strong class="text-white">Hỗ trợ Pitching:</strong> Hoàn thiện Sales Deck, hỗ trợ đàm phán thành công 5 hợp đồng thương mại lớn.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Exp 2 -->
+                    <div class="relative">
+                        <div class="absolute w-4 h-4 bg-emerald-500 rounded-full -left-[35px] md:-left-[43px] top-1.5 border-4 border-slate-900 shadow-sm shadow-emerald-500/50"></div>
+                        <div class="flex justify-between items-start flex-wrap gap-2 mb-2">
+                            <div>
+                                <h3 class="text-white font-semibold text-lg">Trưởng Ban Truyền thông & Đối ngoại</h3>
+                                <p class="text-emerald-400 text-sm font-medium">CLB Nhà Quản Trị Tương Lai - UEH</p>
+                            </div>
+                            <span class="text-slate-500 text-xs font-medium px-2.5 py-1 rounded-md bg-slate-900 border border-slate-800">09/2024 - 04/2025</span>
+                        </div>
+                        <ul class="space-y-2 text-sm text-slate-400 list-disc list-inside">
+                            <li><strong class="text-white">Quản lý kênh:</strong> Định hướng nội dung Fanpage CLB, đạt tăng trưởng <span class="text-emerald-400 font-semibold">40% tương tác tự nhiên</span>.</li>
+                            <li><strong class="text-white">Gây quỹ đối ngoại:</strong> Đàm phán thành công mang về tổng ngân sách tài trợ <span class="text-blue-400 font-semibold">50 triệu VNĐ</span> từ 3 nhãn hàng.</li>
+                            <li><strong class="text-white">Điều phối dự án:</strong> Tổ chức cuộc thi giải case study toàn trường quy tụ hơn 1.000 thí sinh tham gia.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-24 border-t border-slate-900 bg-slate-950/40">
+            <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-4 sticky top-28">
+                    <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">03 / Expertise</h2>
+                    <p class="text-3xl font-serif font-bold text-white">Năng Lực & Công Cụ</p>
+                </div>
+                <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                        <h3 class="text-white font-semibold mb-4 text-base flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> Chuyên Môn Kinh Doanh
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Nghiên cứu thị trường</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Phân tích kinh doanh</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Quản trị dự án</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Đàm phán thương mại</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80">
+                        <h3 class="text-white font-semibold mb-4 text-base flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Công Cụ Kỹ Thuật
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-mono">MS Excel (Advanced)</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-mono">Microsoft Power BI</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-mono">Google Analytics</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300 font-mono">CRM Systems</span>
+                        </div>
+                    </div>
+
+                    <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800/80 md:col-span-2">
+                        <h3 class="text-white font-semibold mb-4 text-base flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span> Ngoại Ngữ & Kỹ Năng Mềm
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-xs text-blue-400 font-medium">Tiếng Anh Lưu Loát (TOEIC 850)</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Tư duy phản biện</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Làm việc nhóm dưới áp lực</span>
+                            <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-xs text-slate-300">Giao tiếp đa tầng</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 border-t border-slate-900">
+            <div class="max-w-6xl mx-auto px-6 space-y-12">
+                <div class="max-w-xl">
+                    <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase mb-3">04 / Creations</h2>
+                    <p class="text-3xl font-serif font-bold text-white">Dự Án Nghiên Cứu & Thực Tế</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+                    <!-- Project 1 -->
+                    <div class="group p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-blue-500/40 transition-all duration-300 flex flex-col justify-between interactive">
+                        <div class="space-y-4">
+                            <span class="text-xs font-mono text-blue-400 uppercase tracking-widest">Đề án Nghiên Cứu Khoa Học Cấp Trường</span>
+                            <h3 class="text-xl font-semibold text-white group-hover:text-blue-400 transition-colors">Ứng dụng Mô hình Kinh tế Tuần hoàn cho chuỗi F&B</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed font-light">
+                                Vai trò Trưởng nhóm. Thực hiện khảo sát và nghiên cứu thực tế hành vi giảm thiểu rác thải nhựa tại các chuỗi F&B lớn khu vực Làng Đại học. Xuất sắc đạt giải Khuyến khích cấp trường.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500 font-medium">
+                            <span>Mô hình: Circular Economy</span>
+                            <span class="text-emerald-400">Giải Khuyến Khích</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="group p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between interactive">
+                        <div class="space-y-4">
+                            <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest">Chiến dịch Thực Tế Kỹ Thuật Số</span>
+                            <h3 class="text-xl font-semibold text-white group-hover:text-emerald-400 transition-colors">Chiến dịch "EcoWear" trên Nền tảng TikTok</h3>
+                            <p class="text-sm text-slate-400 leading-relaxed font-light">
+                                Lên kế hoạch và thực thi chiến dịch Marketing tái định vị dòng sản phẩm thời trang bền vững hướng tới Gen Z. Thu về 50,000+ lượt tiếp cận tự nhiên và thúc đẩy tăng trưởng doanh số Ecommerce.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-500 font-medium">
+                            <span>Công cụ: TikTok, Shopee Live</span>
+                            <span class="text-emerald-400">+12% Doanh Số</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 border-t border-slate-900 bg-gradient-to-b from-slate-950 to-slate-900 flex-1 flex flex-col justify-center">
+            <div class="max-w-6xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <div class="lg:col-span-5 space-y-6">
+                    <h2 class="text-xs font-semibold tracking-widest text-blue-400 uppercase">05 / Contact</h2>
+                    <p class="text-4xl font-serif font-bold text-white tracking-tight">Cùng kết nối để tạo nên giá trị mới.</p>
+                    <p class="text-sm text-slate-400 leading-relaxed max-w-sm font-light">
+                        Mọi thắc mắc về cơ hội hợp tác, chương trình Quản trị viên tập sự hoặc trao đổi chuyên môn, vui lòng gửi tin nhắn hoặc kết nối trực tiếp qua các kênh thông tin bên cạnh.
+                    </p>
+                    <div class="space-y-3 pt-4 text-sm text-slate-300">
+                        <p class="flex items-center gap-3">
+                            <span class="text-slate-500">Email:</span> <a href="mailto:hien.nguyenueh@st.ueh.edu.vn" class="hover:text-blue-400 transition-colors interactive">hien.nguyenueh@st.ueh.edu.vn</a>
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="text-slate-500">Phone:</span> <a href="tel:0901234xxx" class="hover:text-blue-400 transition-colors interactive">0901.234.xxx</a>
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="text-slate-500">LinkedIn:</span> <a href="#" class="hover:text-blue-400 transition-colors interactive">linkedin.com/in/nguyenthuyhien-ueh</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <form class="p-8 rounded-3xl bg-slate-900/50 border border-slate-800 space-y-5 interactive" onsubmit="event.preventDefault(); alert('Cảm ơn bạn đã gửi tin nhắn liên hệ!');">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Họ và tên</label>
+                                <input type="text" required class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Địa chỉ Email</label>
+                                <input type="email" required class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Tiêu đề tin nhắn</label>
+                            <input type="text" required class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-xs font-medium text-slate-400 uppercase tracking-wider">Nội dung chi tiết</label>
+                            <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors resize-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold transition-colors shadow-lg shadow-blue-500/10">
+                            Gửi Tin Nhắn Liên Hệ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-8 bg-slate-950 border-t border-slate-900/60 text-center text-xs text-slate-600">
+            <div class="max-w-6xl mx-auto px-6">
+                &copy; 2026 Nguyễn Thúy Hiền. Built with Tailwind CSS & HTML5 Canvas. All rights reserved.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JavaScript - Interactive Canvas Elements & Web Audio API -->
+    <script>
+        const canvas = document.getElementById('bubbleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Config State
+        let showBubbles = true;
+        let audioCtx = null;
+
+        // Color Palettes for pastel bubbles
+        const colors = [
+            'rgba(147, 197, 253, ', // Blue
+            'rgba(110, 231, 183, ', // Emerald
+            'rgba(196, 181, 253, ', // Purple
+            'rgba(252, 165, 165, ', // Red
+            'rgba(253, 224, 71,  ', // Yellow
+            'rgba(244, 114, 182, '  // Pink
+        ];
+
+        const shapes = ['circle', 'rounded-rect', 'heart', 'star'];
+
+        class Bubble {
+            constructor(x, y, isExplosionParticle = false, pColor = '', pShape = '') {
+                this.isParticle = isExplosionParticle;
+                this.x = x || Math.random() * width;
+                this.y = y || (isExplosionParticle ? y : -50);
+                this.radius = isExplosionParticle ? Math.random() * 4 + 2 : Math.random() * 25 + 15;
+                this.shape = pShape || shapes[Math.floor(Math.random() * shapes.length)];
+                
+                // Color configuration
+                if (isExplosionParticle) {
+                    this.colorRaw = pColor;
+                    this.opacity = 1;
+                } else {
+                    this.colorRaw = colors[Math.floor(Math.random() * colors.length)];
+                    this.opacity = Math.random() * 0.2 + 0.5; // 0.5 to 0.7
+                }
+
+                // Physics mechanics
+                if (isExplosionParticle) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 4 + 2;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                } else {
+                    this.vx = Math.random() * 0.6 - 0.3;
+                    this.vy = Math.random() * 1.5 + 0.8; // Fall down speed
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.isParticle ? this.colorRaw : `${this.colorRaw}${this.opacity})`;
+                
+                // Adding a premium glow effect to normal bubbles
+                if (!this.isParticle) {
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = `${this.colorRaw}0.4)`;
+                }
+
+                if (this.shape === 'circle') {
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                } 
+                else if (this.shape === 'rounded-rect') {
+                    const r = this.radius;
+                    ctx.roundRect(this.x - r, this.y - r, r * 2, r * 2, r * 0.4);
+                } 
+                else if (this.shape === 'heart') {
+                    const r = this.radius * 1.2;
+                    ctx.moveTo(this.x, this.y + r / 4);
+                    ctx.bezierCurveTo(this.x + r / 2, this.y - r / 2, this.x + r, this.y, this.x, this.y + r);
+                    ctx.bezierCurveTo(this.x - r, this.y, this.x - r / 2, this.y - r / 2, this.x, this.y + r / 4);
+                } 
+                else if (this.shape === 'star') {
+                    let spikes = 5;
+                    let outerRadius = this.radius;
+                    let innerRadius = this.radius / 2;
+                    let rot = Math.PI / 2 * 3;
+                    let cx = this.x;
+                    let cy = this.y;
+                    let step = Math.PI / spikes;
+
+                    ctx.moveTo(cx, cy - outerRadius);
+                    for (let i = 0; i < spikes; i++) {
+                        ctx.lineTo(cx + Math.cos(rot) * outerRadius, cy + Math.sin(rot) * outerRadius);
+                        rot += step;
+                        ctx.lineTo(cx + Math.cos(rot) * innerRadius, cy + Math.sin(rot) * innerRadius);
+                        rot += step;
+                    }
+                    ctx.lineTo(cx, cy - outerRadius);
+                }
+
+                ctx.fill();
+                ctx.restore();
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.isParticle) {
+                    this.opacity -= 0.025; // fade out fast
+                } else {
+                    // gentle floating drift
+                    if (this.x < -50 || this.x > width + 50) this.vx *= -1;
+                }
+            }
+        }
+
+        let elements = [];
+
+        // Pop Synthesizer sound generator via Web Audio API
+        function playPopSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            // Quick sweep frequency to synthesize a crisp organic pop sound
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.08);
+
+            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+
+        // Click interaction handler
+        window.addEventListener('click', (e) => {
+            if (!showBubbles) return;
+            
+            // Avoid bursting when clicking buttons or interactive forms
+            if (e.target.closest('.interactive') || e.target.tagName === 'A' || e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            const clickX = e.clientX;
+            const clickY = e.clientY;
+
+            for (let i = elements.length - 1; i >= 0; i--) {
+                const b = elements[i];
+                if (!b.isParticle) {
+                    const dist = Math.hypot(b.x - clickX, b.y - clickY);
+                    if (dist < b.radius + 15) { // Add padding for easier hitting on mobile
+                        // Play synthesized pop
+                        playPopSound();
+
+                        // Generate explosion shard particles
+                        const resolvedColor = b.colorRaw.includes('rgba') ? `${b.colorRaw}1)` : b.colorRaw;
+                        for (let p = 0; p < 8; p++) {
+                            elements.push(new Bubble(b.x, b.y, true, resolvedColor, b.shape));
+                        }
+                        
+                        // Remove original bubble
+                        elements.splice(i, 1);
+                        break; 
+                    }
+                }
+            }
+        });
+
+        // Animation System Engine Loop
+        function loop() {
+            ctx.clearRect(0, 0, width, height);
+
+            if (showBubbles && Math.random() < 0.03 && elements.filter(e => !e.isParticle).length < 45) {
+                elements.push(new Bubble());
+            }
+
+            for (let i = elements.length - 1; i >= 0; i--) {
+                const el = elements[i];
+                el.update();
+                el.draw();
+
+                // Clean up conditions
+                if (el.isParticle && el.opacity <= 0) {
+                    elements.splice(i, 1);
+                } else if (!el.isParticle && el.y > height + 50) {
+                    elements.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(loop);
+        }
+        loop();
+
+        // Control Panel Management Logic
+        const btnMusic = document.getElementById('btnMusic');
+        const bgMusic = document.getElementById('bgMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+
+        btnMusic.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    musicIcon.textContent = '🔊';
+                    musicText.textContent = 'Nhạc Nền: Bật';
+                }).catch(err => console.log("Audio autoplay restricted by browser policy"));
+            } else {
+                bgMusic.pause();
+                musicIcon.textContent = '🔇';
+                musicText.textContent = 'Nhạc Nền: Tắt';
+            }
+        });
+
+        const btnToggleBubbles = document.getElementById('btnToggleBubbles');
+        const bubbleIcon = document.getElementById('bubbleIcon');
+        const bubbleText = document.getElementById('bubbleText');
+
+        btnToggleBubbles.addEventListener('click', () => {
+            showBubbles = !showBubbles;
+            if (showBubbles) {
+                bubbleIcon.textContent = '🎈';
+                bubbleText.textContent = 'Hiệu ứng: Bật';
+            } else {
+                bubbleIcon.textContent = '💨';
+                bubbleText.textContent = 'Hiệu ứng: Tắt';
+                elements = []; // Clear canvas immediately
+            }
+        });
+    </script>
+</body>
+</html>
